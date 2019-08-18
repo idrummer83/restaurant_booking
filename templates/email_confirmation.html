@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+{% block form %}
+
+    <div class="mb-4">
+        <a href="/">back to main page</a>
+    </div>
+
+    <span class="d-none table_id">{{ table_id }}</span>
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Confirm table by email" />
+    </form>
+
+    <script>
+        $(document).ready(function () {
+            $('#id_visitor_table').parent('p').hide();
+            $('#id_visitor_table').val($('.table_id').text())
+        })
+    </script>
+
+{% endblock %}
