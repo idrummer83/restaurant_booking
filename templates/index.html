@@ -20,24 +20,31 @@
   <body>
 
     <div class="calendar-wrap col-6 ml-auto mr-auto mb-4">
+{#        <input type='text' id='datepicker' name='datepicker'>#}
         <button class="prev-day btn btn-outline-secondary">
-        <i class="fa fa-angle-left" aria-hidden='true'></i>
+            <i class="fa fa-angle-left" aria-hidden='true'></i>
+            <span>previous day</span>
         </button>
         <button class='today-date btn btn-outline-secondary'>Today</button>
-        <input type='text' id='datepicker' name='datepicker'>
         <button class='next-day btn btn-outline-secondary'>
+            <span>next day</span>
             <i class='fa fa-angle-right' aria-hidden='true'></i>
         </button>
+        <div id='datepicker'></div>
     </div>
 
-    <div class="col-4 ml-auto mr-auto">
-        <div class="border p-3">
-            {% for table in all_tables %}
-                <a id="{{ table.pk }}" href="{{ table.pk }}">
-                    <span data-table-date="{{ table.table_date }}" class="badge badge-primary">{{ table.table_number }}</span>
-                </a>
-            {% endfor %}
-        </div>
+    <div class="mt-5 ml-auto mr-auto mb-5 position-relative" style="width: {{ restaurant.rest_width }}px;height: {{ restaurant.rest_height }}px;background-color: #ccc;">
+        {% for table in all_tables %}
+            <div class="get-table position-absolute
+            {% if today == table.table_date %}badge-danger{% endif %}
+            {% if table.get_table_form_display == 'Circle' %}rounded-circle{% endif %}" style="left: {{ table.table_position_width }}px;top: {{ table.table_position_height }}px;
+               width: {{ table.table_width }}px;height: {{ table.table_height }}px;" id="{{ table.pk }}">
+                <span data-table-date="{% for td in table.table_date.all %}{{ td.table_date }},{% endfor %}" class="badge badge-primary">
+                    {{ table.table_number }}
+                </span>
+                <span class="text-white">{{ table.table_date }}</span>
+            </div>
+        {% endfor %}
     </div>
 
     {% block script %}
@@ -52,19 +59,8 @@
         <script src="{% static 'js/main.js' %}"></script>
     {% endblock %}
 
-
      {% block form %}
      {% endblock %}
-
-
-
-  <script>
-      $(document).ready(function () {
-         // Clear
-        sessionStorage.setItem("class_checked", "");
-        sessionStorage.setItem("id_checked", '');
-      });
-  </script>
 
   </body>
 </html>

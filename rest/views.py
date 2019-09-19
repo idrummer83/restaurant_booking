@@ -1,16 +1,47 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
+from django.forms import modelformset_factory, inlineformset_factory
+from django.db import transaction, IntegrityError
+from datetime import datetime
 
 
 from .forms import DateForm, ConfirmationForm
-from .models import Table
+from .models import Table,Language, Programmer, RestaurantSpace
 
 # Create your views here.
 
+
+def index(request, programmer_id):
+    programmer = Programmer.objects.get(pk=programmer_id)
+    # LanguageFormset = modelformset_factory(Language, fields=('name',))
+    LanguageFormset = inlineformset_factory(Programmer, Language, fields=('name',), extra=1)
+
+    if request.method == 'POST':
+        # formset = LanguageFormset(request.POST, queryset=Language.objects.filter(programmer_id=programmer_id))
+        formset = LanguageFormset(request.POST, instance=programmer)
+        if formset.is_valid():
+            formset.save()
+            # instances = formset.save(commit=False)
+            # for inst in instances:
+            #     inst.programmer_id = programmer.id
+            #     inst.save()
+            return redirect('index', programmer_id=programmer.id)
+
+    # formset = LanguageFormset(queryset=Language.objects.filter(programmer_id=programmer_id))
+    formset = LanguageFormset(instance=programmer)
+    return render(request, 'test.html', {
+        'formset': formset
+    })
+
+
 def main_page(request):
+    restaurant = RestaurantSpace.objects.all().first()
     all_tables = Table.objects.all()
+    now = datetime.now()
     context = {
-        'all_tables': all_tables
+        'restaurant': restaurant,
+        'all_tables': all_tables,
+        'today': now.strftime('%d/%m/%Y')
     }
     return render(request, 'index.html', context)
 

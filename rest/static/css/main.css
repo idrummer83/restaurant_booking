@@ -1,4 +1,12 @@
 
-.badge:hover {
+.get-table {
+    background-color: #000;
+}
+
+.get-table.badge-danger {
+    background-color: #dc3545;
+}
+
+.badge:hover, .get-table:hover {
     cursor: pointer;
 }

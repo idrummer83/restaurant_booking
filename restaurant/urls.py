@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from rest.views import main_page, form_table, email_confirmation
+from rest.views import main_page, form_table, email_confirmation, index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('test/<programmer_id>/', index, name='index'),
     path('', main_page, name='main'),
-    path('<pk>', form_table, name='form'),
+    # path('<pk>', form_table, name='form'),
     path('confirm/<pk>', email_confirmation, name='email')
 ]

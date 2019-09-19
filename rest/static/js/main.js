@@ -1,59 +1,63 @@
 $(document).ready(function(){
 
-    function compare(){
-        var date = $('#datepicker').val();
-        $('.border .badge').each(function(){
+    function compare(date){
+        console.log('in date-', date);
+        $('.get-table .badge').each(function(){
             var q = $(this).data('table-date');
-            if (q == date) {
-                $(this).hide()
-            } else {
-                $(this).show()
+            var a = q.split(',');
+            a.pop();
+            console.log(a);
+
+            for (let i = 0; i < a.length; i++){
+                if (a[i] == date) {
+                    console.log(a[i]);
+                    $(this).parent('div').addClass('badge-danger');
+                    break
+                } else {
+                    $(this).parent('div').removeClass('badge-danger')
+                }
             }
         })
     }
 
-    $('#datepicker').val(moment().format('MM/DD/YYYY'));
     $('#datepicker').datepicker({
-        onSelect: function() {
-                    compare();
-        },
+        dateFormat: "dd/mm/yy",
+        onSelect: function () {
+            var qwe = $(this).val();
+            compare(qwe);
+        }
     });
 
-    compare();
+    // compare();
 
    $('.next-day').on('click', function () {
        var date = $('#datepicker').datepicker('getDate');
-       date.setDate(date.getDate() +1);
+       date.setDate(date.getDate() +1)
        $('#datepicker').datepicker('setDate', date);
+       var qqq = $('#datepicker').val();
 
-       compare();
+       compare(qqq);
    });
 
    $('.prev-day').on('click', function () {
        var date = $('#datepicker').datepicker('getDate');
-       date.setDate(date.getDate() -1);
+       date.setDate(date.getDate() -1)
        $('#datepicker').datepicker('setDate', date);
+       var qqq = $('#datepicker').val();
 
-       compare();
+       compare(qqq);
    });
 
    $('.today-date').on('click', function () {
-       var date = moment().format('MM/DD/YYYY');
-       $('#datepicker').datepicker('setDate', date);
+       var qwe = $('#datepicker').val(moment().format('DD/MM/YYYY'));
 
-       compare();
+       compare(qwe.val());
    });
 
-   $('.border .badge').on('click', function(){
-       var date = $('#datepicker').val();
-       if ( $(this).hasClass('.reserved.badge-danger') ) {
-            $(this).removeClass('.reserved.badge-danger')
-       } else {
-           $(this).addClass('reserved badge-danger');
-           var field_id = $(this).parent('a').attr('id');
-   //         Store
-           sessionStorage.setItem("class_checked", "reserved badge-danger");
-           sessionStorage.setItem("id_checked", field_id);
-       }
+   /* new */
+
+   $('.get-table').on('click', function(){
+       $(this).toggleClass('badge-danger');
    });
+
 });
