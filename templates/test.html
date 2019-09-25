@@ -1,0 +1,11 @@
+{% load static %}
+
+
+<form method="POST">
+    {% csrf_token %}
+    {{ formset.as_p }}
+    <input type="submit" value="submit" />
+</form>
+
+{#<script src="https://code.jquery.com/jquery-1.12.4.js"></script>#}
+{#<script type="text/javascript" src="{% static 'js/test.js' %}"></script>#}
