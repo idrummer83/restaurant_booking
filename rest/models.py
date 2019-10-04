@@ -44,7 +44,7 @@ class TableDate(models.Model):
     table_date = models.CharField(max_length=10, verbose_name='table date reserve', blank=True, null=True)
 
     def __str__(self):
-        return ('{}').format(self.table)
+        return ('{}').format(self.table_date)
 
     class Meta:
         verbose_name = 'Table date'
@@ -52,7 +52,8 @@ class TableDate(models.Model):
 
 
 class Visitor(models.Model):
-    visitor_table = models.SmallIntegerField(verbose_name='visitor table number')
+    visitor_table = models.ForeignKey(Table, on_delete=models.CASCADE, related_name='visitor_table')
+    visitor_table_date = models.ForeignKey(TableDate, on_delete=models.CASCADE, related_name='visitor_table_date')
     visitor_name = models.CharField(max_length=15, verbose_name='visitor name')
     visitor_email = models.EmailField(max_length=25, verbose_name='visitor email')
 

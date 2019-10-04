@@ -61,6 +61,21 @@ def form_table(request, pk):
     return render(request, 'form.html', context)
 
 
+def booking_table(request, pk):
+    all_tables = Table.objects.all()
+    table = Table.objects.filter(id=pk).first()
+    form = DateForm(request.POST or None, instance=table)
+    if form.is_valid():
+        table.table_number = table.table_number
+        form.save()
+        return redirect('/confirm/{}'.format(pk))
+    context = {
+        'form': form,
+        'all_tables': all_tables
+    }
+    return render(request, 'form.html', context)
+
+
 def email_confirmation(request, pk):
     table = Table.objects.filter(id=pk).first()
     if request.method == 'POST':

@@ -32,4 +32,4 @@ class TableAdmin(admin.ModelAdmin):
 
 @admin.register(Visitor)
 class TableAdmin(admin.ModelAdmin):
-    list_display = ['visitor_table', 'visitor_name', 'visitor_email']
+    list_display = ['visitor_table', 'visitor_table_date', 'visitor_name', 'visitor_email']

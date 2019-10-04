@@ -2,50 +2,80 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Static Example</title>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Static Example</title>
 
-    <!-- Bootstrap 4 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Bootstrap 4 -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <!-- Moment.js -->
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <!-- Moment.js -->
+    </head>
+    <body>
 
-  </head>
-  <body>
+        <div class="row no-gutters">
+            <div class="col-12 col-md-8">
+                <div class="calendar-wrap mb-4">
+                    {#        <input type='text' id='datepicker' name='datepicker'>#}
+                    <button class="prev-day btn btn-outline-secondary">
+                        <i class="fa fa-angle-left" aria-hidden='true'></i>
+                        <span>previous day</span>
+                    </button>
+                    <button class='today-date btn btn-outline-secondary'>Today</button>
+                    <button class='next-day btn btn-outline-secondary'>
+                        <span>next day</span>
+                        <i class='fa fa-angle-right' aria-hidden='true'></i>
+                    </button>
+                    <div id='datepicker'></div>
+                </div>
 
-    <div class="calendar-wrap col-6 ml-auto mr-auto mb-4">
-{#        <input type='text' id='datepicker' name='datepicker'>#}
-        <button class="prev-day btn btn-outline-secondary">
-            <i class="fa fa-angle-left" aria-hidden='true'></i>
-            <span>previous day</span>
-        </button>
-        <button class='today-date btn btn-outline-secondary'>Today</button>
-        <button class='next-day btn btn-outline-secondary'>
-            <span>next day</span>
-            <i class='fa fa-angle-right' aria-hidden='true'></i>
-        </button>
-        <div id='datepicker'></div>
-    </div>
-
-    <div class="mt-5 ml-auto mr-auto mb-5 position-relative" style="width: {{ restaurant.rest_width }}px;height: {{ restaurant.rest_height }}px;background-color: #ccc;">
-        {% for table in all_tables %}
-            <div class="get-table position-absolute
-            {% if today == table.table_date %}badge-danger{% endif %}
-            {% if table.get_table_form_display == 'Circle' %}rounded-circle{% endif %}" style="left: {{ table.table_position_width }}px;top: {{ table.table_position_height }}px;
-               width: {{ table.table_width }}px;height: {{ table.table_height }}px;" id="{{ table.pk }}">
-                <span data-table-date="{% for td in table.table_date.all %}{{ td.table_date }},{% endfor %}" class="badge badge-primary">
-                    {{ table.table_number }}
-                </span>
-                <span class="text-white">{{ table.table_date }}</span>
+                <div class="mt-5 mb-5 position-relative" style="width: {{ restaurant.rest_width }}px;height: {{ restaurant.rest_height }}px;background-color: #ccc;">
+                    {% for table in all_tables %}
+                        <div class="get-table position-absolute
+                            {% if today == table.table_date %}badge-danger{% endif %}
+                            {% if table.get_table_form_display == 'Circle' %}rounded-circle{% endif %}" style="left: {{ table.table_position_width }}px;top: {{ table.table_position_height }}px;
+                            width: {{ table.table_width }}px;height: {{ table.table_height }}px;" id="{{ table.pk }}">
+                            <span data-table-date="{% for td in table.table_date.all %}{{ td.table_date }},{% endfor %}" class="badge badge-primary">
+                                {{ table.table_number }}
+                            </span>
+                            <span class="text-white">{{ table.table_date }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        {% endfor %}
-    </div>
+            <div class="col-12 col-md-4">
+                <h2>booking form</h2>
+                <form id="" class="form_template" action="{% url 'booking_table' %}" method="post">
+                    {% csrf_token %}
+                    <div>
+                        <label for="date">date</label>
+                        <input type="date" id="date" disabled>
+                    </div>
+                    <div>
+                        <label for="table">table</label>
+                        <input type="text" id="table" placeholder="table num" disabled>
+                    </div>
+                    <div>
+                        <label for="email">email</label>
+                        <input type="email" id="email" placeholder="pleae enter your e-mail">
+                    </div>
+                    <div>
+                        <label for="name">name</label>
+                        <input type="text" id="name" placeholder="please enter your name">
+                    </div>
+
+
+                    <button type="submit">create date</button>
+                    <span class="del-form">delete</span>
+                </form>
+                <div class="form_list"></div>
+            </div>
+        </div>
 
     {% block script %}
         <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -59,8 +89,5 @@
         <script src="{% static 'js/main.js' %}"></script>
     {% endblock %}
 
-     {% block form %}
-     {% endblock %}
-
-  </body>
+    </body>
 </html>
