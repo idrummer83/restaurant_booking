@@ -7,6 +7,10 @@
     background-color: #dc3545;
 }
 
+.get-table.badge-success {
+    background-color: #28a745;
+}
+
 .badge:hover, .get-table:hover {
     cursor: pointer;
 }
