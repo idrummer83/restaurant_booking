@@ -17,11 +17,28 @@ $(document).ready(function(){
         })
     }
 
+    function selected(date){
+        $('.form_list #date').each(function(){
+            $(this).val(date);
+        });
+    }
+
+    function compare_selected(){
+        console.log(('.get-table .badge-danger').length);
+        for (let i = 0; i < $('.badge-danger').length; i++){
+            console.log(i);
+            let id = $('.badge-danger').attr('id')[i];
+            console.log(id);
+            $('.form_list #id-'+ id + ' button').attr('disabled','disabled');
+            }
+    }
+
     $('#datepicker').datepicker({
         dateFormat: "dd/mm/yy",
         onSelect: function () {
                     let qwe = $(this).val();
                     compare(qwe);
+                    selected(qwe);
                     $('.control-date').text(qwe);
                 }
     });
@@ -36,6 +53,8 @@ $(document).ready(function(){
        let qqq = $('#datepicker').val();
 
        compare(qqq);
+       selected(qqq);
+       compare_selected();
        $('.control-date').text(qqq);
    });
 
@@ -46,6 +65,7 @@ $(document).ready(function(){
        let qqq = $('#datepicker').val();
 
        compare(qqq);
+       selected(qqq);
        $('.control-date').text(qqq);
    });
 
@@ -53,6 +73,7 @@ $(document).ready(function(){
        let qwe = $('#datepicker').val(moment().format('DD/MM/YYYY'));
 
        compare(qwe.val());
+       selected(qqq);
        $('.control-date').text(qwe.val());
    });
 
@@ -63,14 +84,13 @@ $(document).ready(function(){
         if ($(this).hasClass('badge-danger')) {
             return false;
         } else {
-            // let q = $(this).children('.badge').data('table-date');
-            // let a = q.split(',');
-            // a.pop();
-            // console.log(a[1]);
 
             let this_t = $(this);
+
             $(this_t).toggleClass('badge-success');
+            let zzz = $('.control-date').text().toString();
             let t_id = $(this_t).attr('id');
+            $(this_t).attr( 'data-' + zzz.replace(/\//g, ''), t_id);
             let form = $('.form_template').clone()[0];
             let act_form = $(form).attr('action');
 
@@ -85,14 +105,12 @@ $(document).ready(function(){
                 $('.form_list').append(
                     $(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id)
                 );
-                let zzz = $('.control-date').text().toString();
                 $('.form_list #id-'+ t_id + ' #date').val(zzz);
                 $('.form_list #id-'+ t_id + ' #table').val(t_id);
                 form = null;
 
             } else {
                 $('.form_list').append($(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id));
-                let zzz = $('.control-date').text().toString();
                 $('.form_list #id-'+ t_id + ' #date').val(zzz);
                 $('.form_list #id-'+ t_id + ' #table').val(t_id);
                     form = null;

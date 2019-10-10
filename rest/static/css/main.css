@@ -3,13 +3,15 @@
     background-color: #000;
 }
 
-.get-table.badge-danger {
-    background-color: #dc3545;
-}
-
 .get-table.badge-success {
     background-color: #28a745;
 }
+
+.get-table.badge-danger,
+.get-table.badge-danger.badge-success {
+    background-color: #dc3545;
+}
+
 
 .badge:hover, .get-table:hover {
     cursor: pointer;

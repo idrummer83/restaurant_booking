@@ -38,7 +38,7 @@
                     <p class="control-date"></p>
                 </div>
 
-                <div class="mt-5 mb-5 position-relative" style="width: {{ restaurant.rest_width }}px;height: {{ restaurant.rest_height }}px;background-color: #ccc;">
+                <div class="mt-5 mb-5 position-relative bg-secondary" style="width: {{ restaurant.rest_width }}px;height: {{ restaurant.rest_height }}px;">
                     {% for table in all_tables %}
                         <div class="get-table position-absolute
                             {% if today == table.table_date %}badge-danger{% endif %}
@@ -47,7 +47,7 @@
                             <span data-table-date="{% for td in table.table_date.all %}{{ td.table_date }},{% endfor %}" class="badge badge-primary">
                                 {{ table.table_number }}
                             </span>
-                            <span class="text-white">{{ table.table_date }}</span>
+{#                            <span class="text-white">{{ table.table_date }}</span>#}
                         </div>
                     {% endfor %}
                 </div>
