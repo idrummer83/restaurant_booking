@@ -13,6 +13,7 @@
 }
 
 
-.badge:hover, .get-table:hover {
+.badge:hover, .get-table:hover,
+.del-form:hover {
     cursor: pointer;
 }

@@ -24,13 +24,17 @@ $(document).ready(function(){
     }
 
     function compare_selected(){
-        console.log(('.get-table .badge-danger').length);
-        for (let i = 0; i < $('.badge-danger').length; i++){
-            console.log(i);
-            let id = $('.badge-danger').attr('id')[i];
-            console.log(id);
-            $('.form_list #id-'+ id + ' button').attr('disabled','disabled');
+        for (var x = 0; x < $('.get-table').length; x++){
+            console.log(x);
+            var div = $('.get-table')[x];
+            var id = $(div).attr('id');
+            console.log(x, id, '-=-=-=-');
+            if ($('.get-table.badge-danger')[x]) {console.log(id, '-');
+                $('.form_list #id-'+ id).find('button').attr('disabled','disabled');
+            } else {console.log(id, '+');
+                $('.form_list #id-'+ id).find('button').removeAttr('disabled');
             }
+        }
     }
 
     $('#datepicker').datepicker({
@@ -39,11 +43,13 @@ $(document).ready(function(){
                     let qwe = $(this).val();
                     compare(qwe);
                     selected(qwe);
+                    compare_selected();
                     $('.control-date').text(qwe);
                 }
     });
 
     compare($('#datepicker').val());
+    // compare_selected();
     $('.control-date').text($('#datepicker').val());
 
    $('.next-day').on('click', function () {
@@ -66,6 +72,7 @@ $(document).ready(function(){
 
        compare(qqq);
        selected(qqq);
+       compare_selected();
        $('.control-date').text(qqq);
    });
 
@@ -73,7 +80,8 @@ $(document).ready(function(){
        let qwe = $('#datepicker').val(moment().format('DD/MM/YYYY'));
 
        compare(qwe.val());
-       selected(qqq);
+       selected(qwe);
+       compare_selected();
        $('.control-date').text(qwe.val());
    });
 
@@ -118,6 +126,6 @@ $(document).ready(function(){
         }
 
 
-   });
+    });
 
 });
