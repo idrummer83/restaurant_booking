@@ -25,13 +25,11 @@ $(document).ready(function(){
 
     function compare_selected(){
         for (var x = 0; x < $('.get-table').length; x++){
-            console.log(x);
             var div = $('.get-table')[x];
             var id = $(div).attr('id');
-            console.log(x, id, '-=-=-=-');
-            if ($('.get-table.badge-danger')[x]) {console.log(id, '-');
+            if ($(div).hasClass('badge-danger')) {
                 $('.form_list #id-'+ id).find('button').attr('disabled','disabled');
-            } else {console.log(id, '+');
+            } else if ($(div).hasClass('badge-success')) {
                 $('.form_list #id-'+ id).find('button').removeAttr('disabled');
             }
         }
@@ -49,7 +47,6 @@ $(document).ready(function(){
     });
 
     compare($('#datepicker').val());
-    // compare_selected();
     $('.control-date').text($('#datepicker').val());
 
    $('.next-day').on('click', function () {
@@ -125,7 +122,15 @@ $(document).ready(function(){
             }
         }
 
+    });
 
+
+
+    $(document).on("click", ".form_list .del-form" , function() {
+        let table_id = $(this).parent().attr('id').slice(3);
+        console.log(table_id);
+        $(this).parent().remove();
+        $('.table-wrap').find('#'+table_id).removeClass('badge-success');
     });
 
 });
