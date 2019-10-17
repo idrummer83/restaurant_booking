@@ -1,5 +1,5 @@
 from django.contrib import admin
-from rest.models import TableDate, Table, Visitor, Language, Programmer, RestaurantSpace
+from rest.models import Table, Visitor, RestaurantSpace
 
 # Register your models here.
 
@@ -9,19 +9,9 @@ class RestAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Language)
-class TableAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(Programmer)
-class TableAdmin(admin.ModelAdmin):
-    pass
-
-
-@admin.register(TableDate)
-class TableDateAdmin(admin.ModelAdmin):
-    list_display = ['table', 'table_date']
+# @admin.register(TableDate)
+# class TableDateAdmin(admin.ModelAdmin):
+#     list_display = ['table', 'table_date']
 
 
 @admin.register(Table)
@@ -31,5 +21,5 @@ class TableAdmin(admin.ModelAdmin):
 
 
 @admin.register(Visitor)
-class TableAdmin(admin.ModelAdmin):
+class VisitorAdmin(admin.ModelAdmin):
     list_display = ['visitor_table', 'visitor_table_date', 'visitor_name', 'visitor_email']

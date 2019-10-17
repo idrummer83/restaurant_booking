@@ -18,7 +18,7 @@ $(document).ready(function(){
     }
 
     function selected(date){
-        $('.form_list #date').each(function(){
+        $('.form_list #id_visitor_table_date').each(function(){
             $(this).val(date);
         });
     }
@@ -110,21 +110,19 @@ $(document).ready(function(){
                 $('.form_list').append(
                     $(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id)
                 );
-                $('.form_list #id-'+ t_id + ' #date').val(zzz);
-                $('.form_list #id-'+ t_id + ' #table').val(t_id);
+                $('.form_list #id-'+ t_id + ' #id_visitor_table_date').val(zzz);
+                $('.form_list #id-'+ t_id + ' #id_visitor_table').val(t_id);
                 form = null;
 
             } else {
                 $('.form_list').append($(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id));
-                $('.form_list #id-'+ t_id + ' #date').val(zzz);
-                $('.form_list #id-'+ t_id + ' #table').val(t_id);
+                $('.form_list #id-'+ t_id + ' #id_visitor_table_date').val(zzz);
+                $('.form_list #id-'+ t_id + ' #id_visitor_table').val(t_id);
                     form = null;
             }
         }
 
     });
-
-
 
     $(document).on("click", ".form_list .del-form" , function() {
         let table_id = $(this).parent().attr('id').slice(3);

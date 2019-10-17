@@ -3,13 +3,6 @@ from django.forms import ModelForm
 from rest.models import Table, Visitor
 
 
-# class DatetestForm(ModelForm):
-#     class Meta:
-#         model = Datetest
-#         fields = ['datetest']
-        # labels = {'date': 'date'}
-
-
 class DateForm(ModelForm):
     class Meta:
         model = Table
@@ -20,4 +13,4 @@ class DateForm(ModelForm):
 class ConfirmationForm(ModelForm):
     class Meta:
         model = Visitor
-        fields = ['visitor_table', 'visitor_name', 'visitor_email']
+        fields = ['visitor_table', 'visitor_table_date', 'visitor_name', 'visitor_email']

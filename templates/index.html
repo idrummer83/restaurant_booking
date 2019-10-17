@@ -40,6 +40,9 @@
 
                 <div class="mt-5 mb-5 position-relative bg-secondary table-wrap" style="width: {{ restaurant.rest_width }}px;height: {{ restaurant.rest_height }}px;">
                     {% for table in all_tables %}
+                        {{ table.visitor_table.table_number }}--- <br>
+                        {{ table.table_number }}---
+
                         <div class="get-table position-absolute
                             {% if today == table.table_date %}badge-danger{% endif %}
                             {% if table.get_table_form_display == 'Circle' %}rounded-circle{% endif %}" style="left: {{ table.table_position_width }}px;top: {{ table.table_position_height }}px;
@@ -51,32 +54,38 @@
                         </div>
                     {% endfor %}
                 </div>
+
             </div>
             <div class="col-12 col-md-4">
                 <h2>booking form</h2>
-                <form id="" class="form_template" action="{% url 'booking_table' %}" method="post">
+                <form class="form_template" action="/booking_table/" method="post">
                     {% csrf_token %}
-                    <div>
-                        <label for="date">date</label>
-                        <input type="text" id="date" disabled>
-                    </div>
-                    <div>
-                        <label for="table">table</label>
-                        <input type="text" id="table" placeholder="table num" disabled>
-                    </div>
-                    <div>
-                        <label for="email">email</label>
-                        <input type="email" id="email" placeholder="pleae enter your e-mail">
-                    </div>
-                    <div>
-                        <label for="name">name</label>
-                        <input type="text" id="name" placeholder="please enter your name">
-                    </div>
-
-
+                    {{ form.as_p }}
                     <button type="submit">create date</button>
                     <span class="del-form">delete</span>
                 </form>
+{#                <form id="" class="form_template" action="/booking_table/" method="post">#}
+{#                    {% csrf_token %}#}
+{#                    <div>#}
+{#                        <label for="date">date</label>#}
+{#                        <input type="text" id="date" disabled>#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <label for="table">table</label>#}
+{#                        <input type="text" id="table" placeholder="table num" disabled>#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <label for="email">email</label>#}
+{#                        <input type="email" id="email" placeholder="please enter your e-mail">#}
+{#                    </div>#}
+{#                    <div>#}
+{#                        <label for="name">name</label>#}
+{#                        <input type="text" id="name" placeholder="please enter your name">#}
+{#                    </div>#}
+{##}
+{#                    <button type="submit">create date</button>#}
+{#                    <span class="del-form">delete</span>#}
+{#                </form>#}
                 <div class="form_list"></div>
             </div>
         </div>

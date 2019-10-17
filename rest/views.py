@@ -1,79 +1,49 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
-from django.forms import modelformset_factory, inlineformset_factory
-from django.db import transaction, IntegrityError
 from datetime import datetime
 
-
 from .forms import DateForm, ConfirmationForm
-from .models import Table,Language, Programmer, RestaurantSpace
+from .models import Table, RestaurantSpace, Visitor
 
 # Create your views here.
 
 
-def index(request, programmer_id):
-    programmer = Programmer.objects.get(pk=programmer_id)
-    # LanguageFormset = modelformset_factory(Language, fields=('name',))
-    LanguageFormset = inlineformset_factory(Programmer, Language, fields=('name',), extra=1)
-
-    if request.method == 'POST':
-        # formset = LanguageFormset(request.POST, queryset=Language.objects.filter(programmer_id=programmer_id))
-        formset = LanguageFormset(request.POST, instance=programmer)
-        if formset.is_valid():
-            formset.save()
-            # instances = formset.save(commit=False)
-            # for inst in instances:
-            #     inst.programmer_id = programmer.id
-            #     inst.save()
-            return redirect('index', programmer_id=programmer.id)
-
-    # formset = LanguageFormset(queryset=Language.objects.filter(programmer_id=programmer_id))
-    formset = LanguageFormset(instance=programmer)
-    return render(request, 'test.html', {
-        'formset': formset
-    })
-
-
 def main_page(request):
     restaurant = RestaurantSpace.objects.all().first()
-    all_tables = Table.objects.all()
+    # all_tables = Table.objects.all().prefetch_related('visitor_table').first()
+    all_tables = Visitor.objects.all()
     now = datetime.now()
+    form = ConfirmationForm()
     context = {
         'restaurant': restaurant,
         'all_tables': all_tables,
-        'today': now.strftime('%d/%m/%Y')
+        'today': now.strftime('%d/%m/%Y'),
+        'form': form,
     }
     return render(request, 'index.html', context)
 
 
-def form_table(request, pk):
-    all_tables = Table.objects.all()
-    table = Table.objects.filter(id=pk).first()
-    form = DateForm(request.POST or None, instance=table)
-    if form.is_valid():
-        table.table_number = table.table_number
-        form.save()
-        return redirect('/confirm/{}'.format(pk))
-    context = {
-        'form': form,
-        'all_tables': all_tables
-    }
-    return render(request, 'form.html', context)
-
-
 def booking_table(request, pk):
-    all_tables = Table.objects.all()
+    # all_tables = Table.objects.all()
     table = Table.objects.filter(id=pk).first()
-    form = DateForm(request.POST or None, instance=table)
+    form = ConfirmationForm(request.POST or None, instance=table)
+
     if form.is_valid():
-        table.table_number = table.table_number
-        form.save()
+        visitor_table = form.cleaned_data['visitor_table']
+        visitor_table_date = form.cleaned_data['visitor_table_date']
+        visitor_name = form.cleaned_data['visitor_name']
+        visitor_email = form.cleaned_data['visitor_email']
+
+        q = Visitor(visitor_table=visitor_table, visitor_table_date=visitor_table_date, visitor_name=visitor_name, visitor_email=visitor_email)
+        q.save()
         return redirect('/confirm/{}'.format(pk))
+    else:
+        form = ConfirmationForm()
     context = {
         'form': form,
-        'all_tables': all_tables
+        # 'all_tables': all_tables
     }
-    return render(request, 'form.html', context)
+    return render(request, 'index.html', context)
 
 
 def email_confirmation(request, pk):
@@ -95,3 +65,18 @@ def email_confirmation(request, pk):
             'table_id': pk
         }
         return render(request, 'email_confirmation.html', context)
+
+
+# def form_table(request, pk):
+#     all_tables = Table.objects.all()
+#     table = Table.objects.filter(id=pk).first()
+#     form = DateForm(request.POST or None, instance=table)
+#     if form.is_valid():
+#         table.table_number = table.table_number
+#         form.save()
+#         return redirect('/confirm/{}'.format(pk))
+#     context = {
+#         'form': form,
+#         'all_tables': all_tables
+#     }
+#     return render(request, 'form.html', context)
