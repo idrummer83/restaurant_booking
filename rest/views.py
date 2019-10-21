@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
+from django.db.models import Prefetch
 from datetime import datetime
 
 from .forms import DateForm, ConfirmationForm
@@ -10,13 +11,16 @@ from .models import Table, RestaurantSpace, Visitor
 
 def main_page(request):
     restaurant = RestaurantSpace.objects.all().first()
-    # all_tables = Table.objects.all().prefetch_related('visitor_table').first()
-    all_tables = Visitor.objects.all()
+    # all_tables = Table.objects.prefetch_related(Prefetch('visitor_table', Visitor.objects.all()))
+    all_tables = Table.objects.all()
+    all_visitor = Visitor.objects.all()
+    # all_tables = Visitor.objects.prefetch_related(Prefetch('visitor_table', Table.objects.all()))
     now = datetime.now()
     form = ConfirmationForm()
     context = {
         'restaurant': restaurant,
         'all_tables': all_tables,
+        'all_visitor': all_visitor,
         'today': now.strftime('%d/%m/%Y'),
         'form': form,
     }
