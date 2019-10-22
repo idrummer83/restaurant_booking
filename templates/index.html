@@ -21,7 +21,6 @@
         <div class="row no-gutters">
             <div class="col-12 col-md-8">
                 <div class="calendar-wrap mb-4">
-                    {#        <input type='text' id='datepicker' name='datepicker'>#}
                     <button class="prev-day btn btn-outline-secondary">
                         <i class="fa fa-angle-left" aria-hidden='true'></i>
                         <span>previous day</span>
@@ -41,11 +40,13 @@
                 <div class="mt-5 mb-5 position-relative bg-secondary table-wrap" style="width: {{ restaurant.rest_width }}px;height: {{ restaurant.rest_height }}px;">
                     {% for table in all_tables %}
                         <div class="get-table position-absolute
-{#                            {% if today == table.table_date %}badge-danger{% endif %}#}
-                            {% if table.get_table_form_display == 'Circle' %}rounded-circle{% endif %}" style="left: {{ table.table_position_width }}px;top: {{ table.table_position_height }}px;
-                            width: {{ table.table_width }}px;height: {{ table.table_height }}px;" id="{{ table.pk }}"
+                            {% if table.get_table_form_display == 'Circle' %}rounded-circle{% endif %}"
+                             style="left: {{ table.table_position_width }}px;top: {{ table.table_position_height }}px;
+                            width: {{ table.table_width }}px;height: {{ table.table_height }}px;"
+                             id="{{ table.pk }}"
                         >
-                            <span data-table-date="{% for td in table.visitor_table.all %}{{ td.visitor_table_date }},{% endfor %}" class="badge badge-primary">
+                            <span data-table-date="{% for td in table.visitor_table.all %}{{ td.visitor_table_date }},{% endfor %}"
+                                  class="badge badge-primary">
                                 {{ table.table_number }}
                             </span>
                         </div>
@@ -55,34 +56,15 @@
             </div>
             <div class="col-12 col-md-4">
                 <h2>booking form</h2>
-                <form class="form_template" action="/booking_table/" method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <button type="submit">create date</button>
-                    <span class="del-form">delete</span>
-                </form>
-{#                <form id="" class="form_template" action="/booking_table/" method="post">#}
-{#                    {% csrf_token %}#}
-{#                    <div>#}
-{#                        <label for="date">date</label>#}
-{#                        <input type="text" id="date" disabled>#}
-{#                    </div>#}
-{#                    <div>#}
-{#                        <label for="table">table</label>#}
-{#                        <input type="text" id="table" placeholder="table num" disabled>#}
-{#                    </div>#}
-{#                    <div>#}
-{#                        <label for="email">email</label>#}
-{#                        <input type="email" id="email" placeholder="please enter your e-mail">#}
-{#                    </div>#}
-{#                    <div>#}
-{#                        <label for="name">name</label>#}
-{#                        <input type="text" id="name" placeholder="please enter your name">#}
-{#                    </div>#}
-{##}
-{#                    <button type="submit">create date</button>#}
-{#                    <span class="del-form">delete</span>#}
-{#                </form>#}
+                <div class="d-none">
+                    <form class="form_template" action="{% url 'booking_table' %}" method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">create date</button>
+                        <span class="del-form">delete</span>
+                    </form>
+                </div>
+
                 <div class="form_list"></div>
             </div>
         </div>

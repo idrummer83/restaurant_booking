@@ -77,7 +77,7 @@ $(document).ready(function(){
        let qwe = $('#datepicker').val(moment().format('DD/MM/YYYY'));
 
        compare(qwe.val());
-       selected(qwe);
+       selected(qwe.val());
        compare_selected();
        $('.control-date').text(qwe.val());
    });
@@ -108,14 +108,16 @@ $(document).ready(function(){
                     }
                 }
                 $('.form_list').append(
-                    $(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id)
+                    // $(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id)
+                    $(form).attr('id', 'id-'+t_id)
                 );
                 $('.form_list #id-'+ t_id + ' #id_visitor_table_date').val(zzz);
                 $('.form_list #id-'+ t_id + ' #id_visitor_table').val(t_id);
                 form = null;
 
             } else {
-                $('.form_list').append($(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id));
+                // $('.form_list').append($(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id));
+                $('.form_list').append($(form).attr('id', 'id-'+t_id));
                 $('.form_list #id-'+ t_id + ' #id_visitor_table_date').val(zzz);
                 $('.form_list #id-'+ t_id + ' #id_visitor_table').val(t_id);
                     form = null;
@@ -126,7 +128,6 @@ $(document).ready(function(){
 
     $(document).on("click", ".form_list .del-form" , function() {
         let table_id = $(this).parent().attr('id').slice(3);
-        console.log(table_id);
         $(this).parent().remove();
         $('.table-wrap').find('#'+table_id).removeClass('badge-success');
     });

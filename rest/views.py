@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.db.models import Prefetch
 from datetime import datetime
 
-from .forms import DateForm, ConfirmationForm
+from .forms import ConfirmationForm
 from .models import Table, RestaurantSpace, Visitor
 
 # Create your views here.
@@ -27,25 +27,29 @@ def main_page(request):
     return render(request, 'index.html', context)
 
 
-def booking_table(request, pk):
-    # all_tables = Table.objects.all()
-    table = Table.objects.filter(id=pk).first()
-    form = ConfirmationForm(request.POST or None, instance=table)
-
+def booking_table(request):
+    form = ConfirmationForm(request.POST or None)
     if form.is_valid():
-        visitor_table = form.cleaned_data['visitor_table']
-        visitor_table_date = form.cleaned_data['visitor_table_date']
-        visitor_name = form.cleaned_data['visitor_name']
-        visitor_email = form.cleaned_data['visitor_email']
+        # visitor_table = form.cleaned_data['visitor_table']
+        # visitor_table_date = form.cleaned_data['visitor_table_date']
+        # visitor_name = form.cleaned_data['visitor_name']
+        # visitor_email = form.cleaned_data['visitor_email']
 
-        q = Visitor(visitor_table=visitor_table, visitor_table_date=visitor_table_date, visitor_name=visitor_name, visitor_email=visitor_email)
-        q.save()
-        return redirect('/confirm/{}'.format(pk))
+        # q = Visitor(visitor_table=visitor_table, visitor_table_date=visitor_table_date,
+        #             visitor_name=visitor_name, visitor_email=visitor_email)
+        receiver_email = form.cleaned_data['visitor_email']
+        send_mail('Table confirmation',
+                  'Dear - {}, Your table is - {}, date is - {}'.format(form.cleaned_data['visitor_name'],
+                                                                       form.cleaned_data['visitor_table'],
+                                                                       form.cleaned_data['visitor_table_date']),
+                  'email_sender@gmail.com', [receiver_email],
+                  fail_silently=False)
+        form.save()
+        return redirect('main')
     else:
         form = ConfirmationForm()
     context = {
         'form': form,
-        # 'all_tables': all_tables
     }
     return render(request, 'index.html', context)
 
@@ -70,17 +74,3 @@ def email_confirmation(request, pk):
         }
         return render(request, 'email_confirmation.html', context)
 
-
-# def form_table(request, pk):
-#     all_tables = Table.objects.all()
-#     table = Table.objects.filter(id=pk).first()
-#     form = DateForm(request.POST or None, instance=table)
-#     if form.is_valid():
-#         table.table_number = table.table_number
-#         form.save()
-#         return redirect('/confirm/{}'.format(pk))
-#     context = {
-#         'form': form,
-#         'all_tables': all_tables
-#     }
-#     return render(request, 'form.html', context)

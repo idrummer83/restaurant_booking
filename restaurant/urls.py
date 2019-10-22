@@ -21,6 +21,7 @@ from rest.views import main_page, booking_table, email_confirmation
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_page, name='main'),
-    path('booking_table/<pk>', booking_table, name='booking_table'),
+    # path('booking_table/<pk>', booking_table, name='booking_table'),
+    path('booking_table/', booking_table, name='booking_table'),
     path('confirm/<pk>', email_confirmation, name='email')
 ]
