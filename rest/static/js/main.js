@@ -2,12 +2,12 @@ $(document).ready(function(){
 
     function compare(date){
         $('.get-table .badge').each(function(){
-            let q = $(this).data('table-date');
-            let a = q.split(',');
-            a.pop();
+            let tabledate = $(this).data('table-date');
+            let tabledatesplit = tabledate.split(',');
+            tabledatesplit.pop();
 
-            for (let i = 0; i < a.length; i++){
-                if (a[i] == date) {
+            for (let i = 0; i < tabledatesplit.length; i++){
+                if (tabledatesplit[i] == date) {
                     $(this).parent('div').addClass('badge-danger');
                     break
                 } else {
@@ -38,40 +38,40 @@ $(document).ready(function(){
     $('#datepicker').datepicker({
         dateFormat: "dd/mm/yy",
         onSelect: function () {
-                    let qwe = $(this).val();
-                    compare(qwe);
-                    selected(qwe);
+                    let selectval = $(this).val();
+                    compare(selectval);
+                    selected(selectval);
                     compare_selected();
-                    $('.control-date').text(qwe);
+                    $('.control-date').text(selectval);
                 }
     });
 
     compare($('#datepicker').val());
     $('.control-date').text($('#datepicker').val());
 
-   $('.next-day').on('click', function () {
-       let date = $('#datepicker').datepicker('getDate');
-       date.setDate(date.getDate() +1);
-       $('#datepicker').datepicker('setDate', date);
-       let qqq = $('#datepicker').val();
+    $('.next-day').on('click', function () {
+        let date = $('#datepicker').datepicker('getDate');
+        date.setDate(date.getDate() +1);
+        $('#datepicker').datepicker('setDate', date);
+        let dateval = $('#datepicker').val();
 
-       compare(qqq);
-       selected(qqq);
-       compare_selected();
-       $('.control-date').text(qqq);
-   });
+        compare(dateval);
+        selected(dateval);
+        compare_selected();
+        $('.control-date').text(dateval);
+    });
 
-   $('.prev-day').on('click', function () {
-       let date = $('#datepicker').datepicker('getDate');
-       date.setDate(date.getDate() -1);
-       $('#datepicker').datepicker('setDate', date);
-       let qqq = $('#datepicker').val();
+    $('.prev-day').on('click', function () {
+        let date = $('#datepicker').datepicker('getDate');
+        date.setDate(date.getDate() -1);
+        $('#datepicker').datepicker('setDate', date);
+        let dateval = $('#datepicker').val();
 
-       compare(qqq);
-       selected(qqq);
-       compare_selected();
-       $('.control-date').text(qqq);
-   });
+        compare(dateval);
+        selected(dateval);
+        compare_selected();
+        $('.control-date').text(dateval);
+    });
 
    $('.today-date').on('click', function () {
        let qwe = $('#datepicker').val(moment().format('DD/MM/YYYY'));
@@ -93,11 +93,10 @@ $(document).ready(function(){
             let this_t = $(this);
 
             $(this_t).toggleClass('badge-success');
-            let zzz = $('.control-date').text().toString();
+            let controldate = $('.control-date').text().toString();
             let t_id = $(this_t).attr('id');
-            $(this_t).attr( 'data-' + zzz.replace(/\//g, ''), t_id);
+            $(this_t).attr( 'data-' + controldate.replace(/\//g, ''), t_id);
             let form = $('.form_template').clone()[0];
-            let act_form = $(form).attr('action');
 
             if ($('.form_list .form_template').length ){
 
@@ -107,23 +106,18 @@ $(document).ready(function(){
                         return false;
                     }
                 }
-                $('.form_list').append(
-                    // $(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id)
-                    $(form).attr('id', 'id-'+t_id)
-                );
-                $('.form_list #id-'+ t_id + ' #id_visitor_table_date').val(zzz);
+                $('.form_list').append($(form).attr('id', 'id-'+t_id));
+                $('.form_list #id-'+ t_id + ' #id_visitor_table_date').val(controldate);
                 $('.form_list #id-'+ t_id + ' #id_visitor_table').val(t_id);
                 form = null;
 
             } else {
-                // $('.form_list').append($(form).attr('action', act_form + t_id).attr('id', 'id-'+t_id));
                 $('.form_list').append($(form).attr('id', 'id-'+t_id));
-                $('.form_list #id-'+ t_id + ' #id_visitor_table_date').val(zzz);
+                $('.form_list #id-'+ t_id + ' #id_visitor_table_date').val(controldate);
                 $('.form_list #id-'+ t_id + ' #id_visitor_table').val(t_id);
                     form = null;
             }
         }
-
     });
 
     $(document).on("click", ".form_list .del-form" , function() {
